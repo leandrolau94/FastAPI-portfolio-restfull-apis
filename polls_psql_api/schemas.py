@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 class ChoiceBase(BaseModel):
     choice_text: str
-    votes_number: int | None = 0
+    votes_number: int = 0
 
 class ChoiceCreate(ChoiceBase):
     pass
