@@ -22,7 +22,7 @@ def get_db():
     response_model=schemas.Question
 )
 def create_question(
-    question: schemas.Question,
+    question: schemas.QuestionCreate,
     db: Session = Depends(get_db)
 ):
     db_question = crud.get_question_by_question_text(
@@ -52,3 +52,20 @@ def read_all_questions(
         db=db, skip=skip, limit=limit
     )
     return questions
+
+# Path operation for create a choice for a
+# certain question
+@app.post(
+    "/questions/{question_id}/choices/",
+    response_model=schemas.Choice
+)
+def create_choice_for_question(
+    question_id: int,
+    choice: schemas.ChoiceCreate,
+    db: Session = Depends(get_db)
+):
+    return crud.create_question_choice(
+        db=db,
+        choice=choice,
+        question_root_id=question_id
+    )

@@ -35,6 +35,10 @@ class Choice(Base):
         unique=True,
         index=True
     )
+    votes_number = Column(
+        Integer,
+        index=True
+    )
     question_id = Column(
         Integer,
         ForeignKey("questions.id")

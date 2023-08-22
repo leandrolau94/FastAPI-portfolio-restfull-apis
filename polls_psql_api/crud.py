@@ -5,7 +5,7 @@ from . import models, schemas
 # Used for creating a new question in main.py
 def create_question(
         db: Session,
-        question: schemas.Question
+        question: schemas.QuestionCreate
 ):
     db_question = models.Question(
         question_text=question.question_text
@@ -32,3 +32,18 @@ def get_all_questions(
     return db.query(
         models.Question
     ).offset(skip).limit(limit).all()
+
+# Used for creating choices for a certain question
+def create_question_choice(
+        db: Session,
+        choice: schemas.ChoiceCreate,
+        question_root_id: int
+):
+    db_choice = models.Choice(
+        **choice.model_dump(),
+        question_id=question_root_id
+    )
+    db.add(db_choice)
+    db.commit()
+    db.refresh(db_choice)
+    return db_choice
