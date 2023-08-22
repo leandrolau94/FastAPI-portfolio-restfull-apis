@@ -19,12 +19,18 @@ def get_db():
 # Path operation for create a new question
 @app.post(
     "/questions/",
-    response_model=schemas.Question
+    response_model=schemas.Question,
+    summary="Create a question"
 )
 def create_question(
     question: schemas.QuestionCreate,
     db: Session = Depends(get_db)
 ):
+    """
+    Create a question with all the basic information:
+
+    - **question_text**: Each question must have a text
+    """
     db_question = crud.get_question_by_question_text(
         db=db,
         text=question.question_text
