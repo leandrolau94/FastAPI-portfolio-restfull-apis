@@ -64,6 +64,16 @@ def create_choice_for_question(
     choice: schemas.ChoiceCreate,
     db: Session = Depends(get_db)
 ):
+    db_choice = crud.get_question_choice_by_choice_text(
+        db=db,
+        text=choice.choice_text,
+        question_root_id=question_id
+    )
+    if db_choice:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Choice already exists"
+        )
     return crud.create_question_choice(
         db=db,
         choice=choice,

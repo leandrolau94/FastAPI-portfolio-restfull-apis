@@ -34,6 +34,16 @@ def get_all_questions(
     ).offset(skip).limit(limit).all()
 
 # Used for creating choices for a certain question
+def get_question_choice_by_choice_text(
+        db: Session,
+        text: str,
+        question_root_id: int
+):
+    return db.query(models.Choice).filter(
+        models.Choice.choice_text == text,
+        models.Choice.question_id == question_root_id,
+    ).first()
+
 def create_question_choice(
         db: Session,
         choice: schemas.ChoiceCreate,
