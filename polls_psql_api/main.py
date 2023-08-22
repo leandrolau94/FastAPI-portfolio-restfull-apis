@@ -16,6 +16,7 @@ def get_db():
     finally:
         db.close()
 
+# Path operation for create a new question
 @app.post(
     "/questions/",
     response_model=schemas.Question
@@ -36,3 +37,18 @@ def create_question(
     return crud.create_question(
         db=db, question=question
     )
+
+# Path operation for get all questions
+@app.get(
+    "/questions/",
+    response_model=list[schemas.Question]
+)
+def read_all_questions(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db)
+):
+    questions = crud.get_all_questions(
+        db=db, skip=skip, limit=limit
+    )
+    return questions

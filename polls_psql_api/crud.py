@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from . import models, schemas
 
+# Used for creating a new question in main.py
 def create_question(
         db: Session,
         question: schemas.Question
@@ -21,3 +22,13 @@ def get_question_by_question_text(
     return db.query(models.Question).filter(
         models.Question.question_text == text
     ).first()
+
+# Used for get all questions in main.py
+def get_all_questions(
+        db: Session,
+        skip: int = 0,
+        limit: int = 100,
+):
+    return db.query(
+        models.Question
+    ).offset(skip).limit(limit).all()
