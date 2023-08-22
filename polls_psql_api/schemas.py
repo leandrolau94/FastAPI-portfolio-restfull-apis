@@ -13,9 +13,12 @@ class Choice(ChoiceBase):
     class Config:
         orm_mode = True
 
-class Question(BaseModel):
+class QuestionBase(BaseModel):
     question_text: str
-    choices: list[Choice] = []
 
+class Question(QuestionBase):
+    id: int
+    choices: list[Choice] = []
+    
     class Config:
         orm_mode = True
