@@ -44,6 +44,26 @@ def create_question(
         db=db, question=question
     )
 
+# Path operation for get a certain question
+# by its id
+@app.get(
+        "/questions/{question_id}/",
+        response_model=schemas.Question
+)
+def read_question_by_id(
+    question_id: int,
+    db: Session = Depends(get_db)
+):
+    db_question = crud.get_question_by_id(
+        db=db, question_id=question_id
+    )
+    if not db_question:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Question does not exist"
+        )
+    return db_question
+
 # Path operation for get all questions
 @app.get(
     "/questions/",

@@ -33,6 +33,15 @@ def get_all_questions(
         models.Question
     ).offset(skip).limit(limit).all()
 
+# Used for get a certain question in main.py
+def get_question_by_id(
+        db: Session,
+        question_id: int
+):
+    return db.query(models.Question).filter(
+        models.Question.id == question_id
+    ).first()
+
 # Used for creating choices for a certain question
 def get_question_choice_by_choice_text(
         db: Session,
