@@ -54,6 +54,11 @@ def read_question_by_id(
     question_id: int,
     db: Session = Depends(get_db)
 ):
+    """
+    Get a certain question by its id
+
+    - **question_id**: the id of the question to get
+    """
     db_question = crud.get_question_by_id(
         db=db, question_id=question_id
     )
