@@ -54,6 +54,13 @@ def read_all_questions(
     limit: int = 100,
     db: Session = Depends(get_db)
 ):
+    """
+    Read all the questions with their entire information
+    
+    - **skip**: an int by default 0.
+    - **limit**: an int by default 100.
+    - returns a list of all question with an offset skip and limited by limit.
+    """
     questions = crud.get_all_questions(
         db=db, skip=skip, limit=limit
     )
@@ -70,6 +77,13 @@ def create_choice_for_question(
     choice: schemas.ChoiceCreate,
     db: Session = Depends(get_db)
 ):
+    """
+    Create a choice for certain question
+
+    - **choice_text**: the choice text
+    - **votes_number**: the number of votes for this choice. By default 0.
+    - **question_id**: the id of the question this choice will belong to.
+    """
     db_choice = crud.get_question_choice_by_choice_text(
         db=db,
         text=choice.choice_text,
