@@ -7,6 +7,8 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 
+import api from './api';
+
 const Choices = (props) => {
     const { choicesArray, polls_question_id } = props
 
@@ -20,6 +22,18 @@ const Choices = (props) => {
         setError(false);
     };
 
+    const incrementVotesCout = async () => {
+        return await api.put(
+            `/questions/${polls_question_id}/choices/${value}`,
+            {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                },
+                withCredentials: true,
+            }
+        )
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -30,6 +44,8 @@ const Choices = (props) => {
         setHelperText('Please select a choice.');
         setError(true);
         };
+        incrementVotesCout();
+        console.log("votes attribute successfully incremented.");
     };
 
     return (
@@ -37,6 +53,7 @@ const Choices = (props) => {
         <FormControl sx={{ m: 3 }} error={error} variant="standard">
             <FormLabel id={`demo-error-radios`}>Available Choices</FormLabel>
             <RadioGroup
+            row
             aria-labelledby={`demo-error-radios`}
             name="quiz"
             value={value}
