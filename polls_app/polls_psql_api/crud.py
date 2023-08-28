@@ -66,3 +66,15 @@ def create_question_choice(
     db.commit()
     db.refresh(db_choice)
     return db_choice
+
+# Used for updating (incrementing) the votes attributes
+# for each choice of certain question
+def get_question_choice_by_question_id_choice_id(
+        db: Session,
+        choice_id: int,
+        question_root_id: int
+):
+    return db.query(models.Choice).filter(
+        models.Choice.id == choice_id,
+        models.Choice.question_id == question_root_id,
+    ).first()

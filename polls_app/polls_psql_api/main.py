@@ -140,6 +140,29 @@ def create_choice_for_question(
         question_root_id=question_id
     )
 
+# for update the votes attribute of each question choice
+@app.put(
+    "/questions/{question_root_id}/choices/{choice_id}",
+    response_model=schemas.Choice,
+)
+def update_votes_count(
+    question_root_id: int,
+    choice_id: int,
+    db: Session = Depends(get_db),
+):
+    db_choice = crud.get_question_choice_by_question_id_choice_id(
+        db=db, choice_id=choice_id, question_root_id=question_root_id
+    )
+    if not db_choice:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Choice does not exist"
+        )
+    db_choice.votes_number += 1
+    db.commit()
+    db.refresh(db_choice)
+    return db_choice
+
 if __name__ == "__main__":
     uvicorn.run(
         app=app,
