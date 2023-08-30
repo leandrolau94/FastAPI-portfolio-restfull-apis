@@ -54,7 +54,7 @@ class Anamnesis(Base):
     description = Column(
         Text, index=True,
     )
-    pacient_id = Column(
+    patient_id = Column(
         Integer,
         ForeignKey(
             "patients.id",
@@ -76,7 +76,7 @@ class UrgencyInform(Base):
     description = Column(
         Text, index=True,
     )
-    pacient_id = Column(
+    patient_id = Column(
         Integer,
         ForeignKey(
             "patients.id",
@@ -98,7 +98,7 @@ class CronologicEvolution(Base):
     description = Column(
         Text, index=True,
     )
-    pacient_id = Column(
+    patient_id = Column(
         Integer,
         ForeignKey(
             "patients.id",
@@ -120,7 +120,7 @@ class MedicalOrders(Base):
     description = Column(
         Text, index=True,
     )
-    pacient_id = Column(
+    patient_id = Column(
         Integer,
         ForeignKey(
             "patients.id",

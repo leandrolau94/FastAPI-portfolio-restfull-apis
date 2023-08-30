@@ -6,6 +6,7 @@ from database import SessionLocal, engine
 import models, crud, schemas
 
 from routers.patients import patients_router
+from routers.anamnesis import anamnesis_router
 
 import uvicorn
 
@@ -32,6 +33,8 @@ async def db_session_middleware(
 # Dependency
 def get_db(request: Request):
     return request.state.db
+
+""" Section for path operations router with patients"""
 
 # Patient router operation for create a patient
 @patients_router.post(
@@ -108,16 +111,46 @@ def read_patient_by_id(
 
     - **patient_id**: the id of the patient to get
     \f
-    :param patient_id: path parameter
+    :param patient_id: path parameter of type int
     """
     db_patient = crud.get_patient_by_id(
         db=db, patient_id=patient_id
     )
     return db_patient
 
+""" Section for path operations router with anamnesis"""
+@anamnesis_router.post(
+    "/patient/{patient_id}",
+    response_model=schemas.Anamnesis,
+    summary="",
+    include_in_schema=True,
+)
+def create_anamnesis_for_patient(
+    patient_id: int,
+    anamnesis: schemas.AnamnesisCreate,
+    db: Session = Depends(get_db),
+):
+    """
+    Create Anamnesis inform for a certain patient
+
+    - **description**: Here goes the inform description
+    - **patient_id**: this parameter relates
+    tables `patients` and `anamnesis` in the
+    postgressql database and represents the id of
+    the patient to set the anamnesis inform
+    \f
+    :param patient_id: path parameter of type int
+    """
+    return crud.create_patient_anamnesis(
+        db=db,
+        anamnesis=anamnesis,
+        patient_id=patient_id
+    )
+
 # including routers
 # including routing for pacients operations
 app.include_router(patients_router)
+app.include_router(anamnesis_router)
 
 if __name__ == "__main__":
     uvicorn.run(

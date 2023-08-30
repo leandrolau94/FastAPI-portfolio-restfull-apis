@@ -48,3 +48,19 @@ def get_patient_by_id(
     return db.query(models.Patient).filter(
         models.Patient.id == patient_id
     ).first()
+
+# Used in main for creating the anamnesis report
+# for a certain patient
+def create_patient_anamnesis(
+        db: Session,
+        anamnesis: schemas.AnamnesisCreate,
+        patient_id: int
+):
+    db_anamnesis = models.Anamnesis(
+        **anamnesis.model_dump(),
+        patient_id=patient_id,
+    )
+    db.add(db_anamnesis)
+    db.commit()
+    db.refresh(db_anamnesis)
+    return db_anamnesis
