@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 
 import models, schemas
 
+"""For patients basic crud"""
+
 # Used in main for the create patient
 # path operation
 def get_patient_by_dni(
@@ -49,6 +51,8 @@ def get_patient_by_id(
         models.Patient.id == patient_id
     ).first()
 
+"""For anamnesis inform basic crud"""
+
 # Used in main for creating the anamnesis report
 # for a certain patient
 def create_patient_anamnesis(
@@ -64,3 +68,43 @@ def create_patient_anamnesis(
     db.commit()
     db.refresh(db_anamnesis)
     return db_anamnesis
+
+# Used in main for get all anamnesis informs
+# of all patients
+def get_all_anamnesis(
+        db: Session,
+        skip: int = 0,
+        limit: int = 1000000000000,
+):
+    return db.query(models.Anamnesis).offset(
+        skip
+    ).limit(limit).all()
+
+"""For urgency inform basic crud"""
+
+# Used in main for creating the urgency inform
+# for a certain patient
+def create_patient_urgency_inform(
+        db: Session,
+        urgency_inform: schemas.UrgencyInformCreate,
+        patient_id: int,
+):
+    db_urgency_inform = models.UrgencyInform(
+        **urgency_inform.model_dump(),
+        patient_id=patient_id,
+    )
+    db.add(db_urgency_inform)
+    db.commit()
+    db.refresh(db_urgency_inform)
+    return db_urgency_inform
+
+# Used in main for get all the urgency informs
+# of all patients
+def get_all_urgency_informs(
+        db: Session,
+        skip: int = 0,
+        limit: int = 1000000000000,
+):
+    return db.query(models.UrgencyInform).offset(
+        skip
+    ).limit(limit).all()

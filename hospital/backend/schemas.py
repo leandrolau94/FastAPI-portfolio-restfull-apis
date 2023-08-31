@@ -11,7 +11,7 @@ class Anamnesis(AnamnesisBase):
     id: int
     patient_id: int
 
-    class Config:
+    class ConfigDict:
         # for replacing the orm_mode = True
         from_attributes = True
 
@@ -26,7 +26,7 @@ class UrgencyInform(UrgencyInformBase):
     id: int
     patient_id: int
 
-    class Config:
+    class ConfigDict:
         # for replacing the orm_mode = True
         from_attributes = True
 
@@ -41,7 +41,7 @@ class CronologicEvolution(CronologicEvolutionBase):
     id: int
     patient_id: int
 
-    class Config:
+    class ConfigDict:
         # for replacing the orm_mode = True
         from_attributes = True
 
@@ -56,7 +56,7 @@ class MedicalOrders(MedicalOrdersBase):
     id: int
     patient_id: int
 
-    class Config:
+    class ConfigDict:
         # for replacing the orm_mode = True
         from_attributes = True
 
@@ -79,6 +79,6 @@ class Patient(PatientBase):
     cronologic_evolution: list[CronologicEvolution] = []
     medical_orders: list[MedicalOrders] = []
 
-    class Config:
+    class ConfigDict:
         # for replacing the orm_mode = True
         from_attributes = True

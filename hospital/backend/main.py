@@ -2,11 +2,12 @@ from fastapi import FastAPI, Depends, HTTPException, Request, Response, status
 
 from sqlalchemy.orm import Session
 
-from database import SessionLocal, engine
+from database import engine, SessionLocal
 import models, crud, schemas
 
 from routers.patients import patients_router
 from routers.anamnesis import anamnesis_router
+from routers.urgency_informs import urgency_informs_router
 
 import uvicorn
 
@@ -43,7 +44,7 @@ def get_db(request: Request):
     summary="Create a patient",
     include_in_schema=True,
 )
-def create_pacient(
+def create_patient(
     patient: schemas.PatientCreate,
     db: Session = Depends(get_db),
 ):
@@ -118,11 +119,13 @@ def read_patient_by_id(
     )
     return db_patient
 
-""" Section for path operations router with anamnesis"""
+"""Section for path operations router with anamnesis"""
+
+# For create the ananemsis inform for a certain patient
 @anamnesis_router.post(
     "/patient/{patient_id}",
     response_model=schemas.Anamnesis,
-    summary="",
+    summary="Create the anamensis inform for a certain patient",
     include_in_schema=True,
 )
 def create_anamnesis_for_patient(
@@ -147,10 +150,88 @@ def create_anamnesis_for_patient(
         patient_id=patient_id
     )
 
+# For get all the anamnesis informs of all patients
+@anamnesis_router.get(
+    "/",
+    response_model=list[schemas.Anamnesis],
+    summary="Get all the anamnesis informs of all patients",
+    include_in_schema=True,
+)
+def read_anamnesis(
+    skip: int = 0,
+    limit: int = 1000000000000,
+    db: Session = Depends(get_db),
+):
+    """
+    Get a list of all anamnesis informs of all patients in the database
+    \f
+    :param skip: min bound for patients anamnesis id
+    :param limit: max bound for patients anamnesis id
+    """
+    anamnesis_informs = crud.get_all_anamnesis(
+        db=db, skip=skip, limit=limit
+    )
+    return anamnesis_informs
+
+"""Section for path operations router with urgency informs"""
+
+# For create the urgency inform for a certain patient
+@urgency_informs_router.post(
+    "/patient/{patient_id}",
+    response_model=schemas.UrgencyInform,
+    summary="Create the urgency inform for a certain patient",
+    include_in_schema=True,
+)
+def create_urgency_inform_for_patient(
+    patient_id: int,
+    urgency_inform: schemas.UrgencyInformCreate,
+    db: Session = Depends(get_db),
+):
+    """
+    Create Urgency inform for a certain patient
+
+    - **description**: Here goes the inform description
+    - **patient_id**: this parameter relates
+    tables `patients` and `urgency_inform` in the
+    postgressql database and represents the id of
+    the patient to set the urgency inform
+    \f
+    :param patient_id: path parameter of type int
+    """
+    return crud.create_patient_urgency_inform(
+        db=db,
+        urgency_inform=urgency_inform,
+        patient_id=patient_id
+    )
+
+# For get all the urgency informs of all patients
+@urgency_informs_router.get(
+    "/",
+    response_model=list[schemas.UrgencyInform],
+    summary="Get all the urgency informs of all patients",
+    include_in_schema=True,
+)
+def read_urgency_informs(
+    skip: int = 0,
+    limit: int = 1000000000000,
+    db: Session = Depends(get_db),
+):
+    """
+    Get a list of all urgency informs of all patients in the database
+    \f
+    :param skip: min bound for patients urgency informs id
+    :param limit: max bound for patients urgency informs id
+    """
+    urgency_informs = crud.get_all_urgency_informs(
+        db=db, skip=skip, limit=limit
+    )
+    return urgency_informs
+
 # including routers
 # including routing for pacients operations
 app.include_router(patients_router)
 app.include_router(anamnesis_router)
+app.include_router(urgency_informs_router)
 
 if __name__ == "__main__":
     uvicorn.run(
