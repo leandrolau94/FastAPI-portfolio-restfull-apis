@@ -108,3 +108,21 @@ def get_all_urgency_informs(
     return db.query(models.UrgencyInform).offset(
         skip
     ).limit(limit).all()
+
+"""For cronologic evolution inform basic crud"""
+
+# Used in main for creating the cronologic
+# evolution inform for a certain patient
+def create_patient_cronologic_evolution_inform(
+        db: Session,
+        crono_evol: schemas.CronologicEvolutionCreate,
+        patient_id: int,
+):
+    db_crono_evol_inform = models.CronologicEvolution(
+        **crono_evol.model_dump(),
+        patient_id=patient_id,
+    )
+    db.add(db_crono_evol_inform)
+    db.commit()
+    db.refresh(db_crono_evol_inform)
+    return db_crono_evol_inform

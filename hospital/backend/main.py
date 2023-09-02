@@ -8,6 +8,7 @@ import models, crud, schemas
 from routers.patients import patients_router
 from routers.anamnesis import anamnesis_router
 from routers.urgency_informs import urgency_informs_router
+from routers.cronologic_evolution import cronologic_evolution_router
 
 import uvicorn
 
@@ -150,6 +151,33 @@ def create_anamnesis_for_patient(
         patient_id=patient_id
     )
 
+# For get te anamnesis inform of a certain pacient
+@anamnesis_router.get(
+        "/patient/{patient_id}",
+        response_model=list[schemas.Anamnesis],
+        summary="Get the anamnesis informs of a certain patient",
+        include_in_schema=True,
+)
+def get_anamnesis_for_patient(
+    patient_id: int,
+    db: Session = Depends(get_db),
+):
+    """
+    Get the anamnesis inform for a certain patient
+
+    - **patient_id**: the id of the patient to get
+    the anamnesis inform
+    \f
+    :param patient_id: path parameter of type int
+    """
+    db_patient = crud.get_patient_by_id(db=db, patient_id=patient_id)
+    if not db_patient:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient doesn't exist",
+        )
+    return db_patient.anamnesis
+
 # For get all the anamnesis informs of all patients
 @anamnesis_router.get(
     "/",
@@ -204,6 +232,32 @@ def create_urgency_inform_for_patient(
         patient_id=patient_id
     )
 
+@urgency_informs_router.get(
+        "/patient/{patient_id}",
+        response_model=list[schemas.UrgencyInform],
+        summary="Get all the urgency informs of a certain patient",
+        include_in_schema=True,
+)
+def get_urgency_inform_for_patient(
+    patient_id: int,
+    db: Session = Depends(get_db),
+):
+    """
+    Get the urgency informs for a certain patient
+
+    - **patient_id**: the id of the patient to get
+    the urgency informs
+    \f
+    :param patient_id: path parameter of type int
+    """
+    db_patient = crud.get_patient_by_id(db=db, patient_id=patient_id)
+    if not db_patient:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient doesn't exist",
+        )
+    return db_patient.urgency_inform
+
 # For get all the urgency informs of all patients
 @urgency_informs_router.get(
     "/",
@@ -227,11 +281,41 @@ def read_urgency_informs(
     )
     return urgency_informs
 
+"""Section for path operations router with cronologic evolution"""
+
+# For create the cronologic evolution inform for a certain patient
+@cronologic_evolution_router.post(
+    "/patient/{patient_id}",
+    response_model=schemas.CronologicEvolution,
+    summary="Create the cronologic evolution inform for a certain patient",
+    include_in_schema=True,
+)
+def create_cronologic_evolution_inform_for_patient(
+    patient_id: int,
+    crono_evol: schemas.CronologicEvolutionCreate,
+    db: Session = Depends(get_db),
+):
+    """
+    Create Cronologic Evolution inform for a certain patient
+
+    - **description**: Here goes the inform description
+    - **patient_id**: this parameter relates tables 
+    `patients` and `cronologic_evolution` in the
+    postgressql database and represents the id of
+    the patient to set the cronologic evolution inform
+    \f
+    :param patient_id: path parameter of type int
+    """
+    return crud.create_patient_cronologic_evolution_inform(
+        db=db, crono_evol=crono_evol, patient_id=patient_id
+    )
+
 # including routers
 # including routing for pacients operations
 app.include_router(patients_router)
 app.include_router(anamnesis_router)
 app.include_router(urgency_informs_router)
+app.include_router(cronologic_evolution_router)
 
 if __name__ == "__main__":
     uvicorn.run(
