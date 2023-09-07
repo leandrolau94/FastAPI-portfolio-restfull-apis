@@ -29,6 +29,8 @@ async def db_session_middleware(
 def get_db(request: Request):
     return request.state.db
 
+
+# for create a food item in the foods database table
 @app.post(
     "/food/",
     response_model=schemas.Food,
@@ -39,6 +41,13 @@ def create_food(
     food: schemas.FoodCreate,
     db: Session = Depends(get_db),
 ):
+    """
+    Create a food item with its name, category and price to store it in database
+
+    - **name**: The name of the food
+    - **category**: The gastronomic category of the food
+    - **price**: The price of the food
+    """
     db_food = crud.get_food_by_name(
         db=db, name=food.name
     )
@@ -50,6 +59,29 @@ def create_food(
     return crud.create_food(
         db=db, food=food
     )
+
+# for get all food items stored in the database
+@app.get(
+    "/food/",
+    response_model=list[schemas.Food],
+    summary="Get all food items in the database",
+    include_in_schema=True,
+)
+def read_foods(
+    skip: int = 0,
+    limit: int = 1000,
+    db: Session = Depends(get_db),
+):
+    """
+    Get all food items in the database
+
+    - **skip**: the lower bound for the id of the foods
+    - **limit**: the upper bound for the id of the foods
+    """
+    foods = crud.get_all_foods(
+        db=db, skip=skip, limit=limit,
+    )
+    return foods
 
 if __name__ == "__main__":
     uvicorn.run(

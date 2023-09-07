@@ -34,6 +34,7 @@ class Food(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
+    category = Column(String, index=True)
     price = Column(Float, index=True)
 
     orders = relationship(

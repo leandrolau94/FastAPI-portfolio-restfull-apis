@@ -22,6 +22,7 @@ class Order(OrderBase):
 # For foods table
 class FoodBase(BaseModel):
     name: str
+    category: str
     price: float
 
 class FoodCreate(FoodBase):
