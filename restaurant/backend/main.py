@@ -60,6 +60,7 @@ def create_food(
     Create a food item with its name, category and price to store it in database
 
     - **name**: The name of the food
+    - **img_url**: The url of the image food sample
     - **category**: The gastronomic category of the food
     - **price**: The price of the food
     """

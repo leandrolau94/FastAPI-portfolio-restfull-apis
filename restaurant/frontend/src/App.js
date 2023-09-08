@@ -9,7 +9,7 @@ function App() {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="md">
-        <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
+        <Box sx={{ bgcolor: '#1b283b', height: '100vh', overflow: "scroll" }}>
           <OrderDashboard />
         </Box>
       </Container>

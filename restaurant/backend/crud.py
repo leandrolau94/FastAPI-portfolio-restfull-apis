@@ -16,7 +16,7 @@ def create_food(
         food: schemas.FoodCreate
 ):
     db_food = models.Food(
-        name=food.name, category=food.category, price=food.price,
+        name=food.name, img_url=food.img_url, category=food.category, price=food.price,
     )
     db.add(db_food)
     db.commit()

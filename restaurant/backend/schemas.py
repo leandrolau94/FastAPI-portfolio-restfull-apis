@@ -22,6 +22,7 @@ class Order(OrderBase):
 # For foods table
 class FoodBase(BaseModel):
     name: str
+    img_url: str
     category: str
     price: float
 

@@ -8,26 +8,26 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 
 const FoodCard = (props) => {
-    const {id, name, category, price} = props;
+    const {id, name, img_url, category, price} = props;
   return (
     <Grid xs={2} sm={4} md={4} key={id}>
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
                 sx={{ height: 140 }}
-                image="https://www.juventudrebelde.cu/images/medias/2019/02/yUw2AU_07-02-2019_13.02.11.000000.jpg"
-                title={`${name}`}
+                image={img_url}
+                title={name}
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                {name}  {price}
+                {name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                {category}
+                {category} <strong>{price}</strong> &euro;
                 </Typography>
             </CardContent>
             <CardActions>
                 {/* <Button size="small">Share</Button> */}
-                <Button size="small">Order</Button>
+                <Button variant="contained" size="small">Add to order</Button>
             </CardActions>
         </Card>
     </Grid>
