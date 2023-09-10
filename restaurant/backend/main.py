@@ -149,6 +149,27 @@ def read_tables(
     )
     return tables
 
+# For getting a table by its table_id
+@app.get(
+        "/table/{table_id}",
+        response_model=schemas.Table,
+        summary="Get a table by its table id",
+        include_in_schema=True,
+)
+def read_table_by_table_id(
+    table_id: int,
+    db: Session = Depends(get_db),
+):
+    db_table = crud.get_table_by_table_id(
+        db=db, table_id=table_id
+    )
+    if db_table is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Table not found",
+        )
+    return db_table
+
 # For create an order in the order database table
 @app.post(
     "/order/food/{food_id}/table/{table_id}/",

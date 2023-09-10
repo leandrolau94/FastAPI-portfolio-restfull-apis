@@ -64,6 +64,15 @@ def get_all_tables(
         skip
     ).limit(limit).all()
 
+# Used in main to get a certain table
+def get_table_by_table_id(
+        db: Session,
+        table_id: int,
+):
+    return db.query(models.Table).filter(
+        models.Table.id == table_id
+    ).first()
+
 # Used in main to create an order
 def create_order(
         db: Session,
