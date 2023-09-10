@@ -126,6 +126,29 @@ def create_table(
         )
     return crud.create_table(db=db, table=table)
 
+# For get all tables in the restaurant
+@app.get(
+        "/table/",
+        response_model=list[schemas.Table],
+        summary="Get all tables in the restaurant",
+        include_in_schema=True,
+)
+def read_tables(
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+):
+    """
+    Get all tables in the restaurant
+
+    - **skip**: lower bound for tables id
+    - **limit**: upper bound for tables id
+    """
+    tables = crud.get_all_tables(
+        db=db, skip=skip, limit=limit,
+    )
+    return tables
+
 # For create an order in the order database table
 @app.post(
     "/order/food/{food_id}/table/{table_id}/",
@@ -152,6 +175,29 @@ def create_order(
         food_id=food_id,
         table_id=table_id,
     )
+
+# For get all orders in the order database table
+@app.get(
+    "/order/",
+    response_model=list[schemas.Order],
+    summary="Get all orders in the restaurant",
+    include_in_schema=True,
+)
+def read_orders(
+    skip: int = 0,
+    limit: int = 1000000,
+    db: Session = Depends(get_db),
+):
+    """
+    Get all orders in the restaurant
+
+    - **skip**: lower bound for orders id
+    - **limit**: upper bound for orders id
+    """
+    orders = crud.get_all_orders(
+        db=db, skip=skip, limit=limit
+    )
+    return orders
 
 if __name__ == "__main__":
     uvicorn.run(

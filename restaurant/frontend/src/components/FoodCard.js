@@ -55,7 +55,7 @@ const FoodCard = (props) => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <FormControl sx={{ m: 1, minWidth: 80 }}>
+                <FormControl sx={{ m: 1, minWidth: 110 }}>
                     <InputLabel id={`quantity-${id}`}>Quantity</InputLabel>
                     <Select
                     labelId={`quantity-${id}`}

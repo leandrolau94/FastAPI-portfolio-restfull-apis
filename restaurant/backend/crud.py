@@ -54,6 +54,16 @@ def create_table(
     db.refresh(db_table)
     return db_table
 
+# Used in main to get all tables
+def get_all_tables(
+        db: Session,
+        skip: int = 0,
+        limit: int = 100,
+):
+    return db.query(models.Table).offset(
+        skip
+    ).limit(limit).all()
+
 # Used in main to create an order
 def create_order(
         db: Session,
@@ -70,3 +80,13 @@ def create_order(
     db.commit()
     db.refresh(db_order)
     return db_order
+
+# Used in main to get all orders in the restaurant
+def get_all_orders(
+        db: Session,
+        skip: int = 0,
+        limit: int = 1000000,
+):
+    return db.query(models.Order).offset(
+        skip
+    ).limit(limit).all()

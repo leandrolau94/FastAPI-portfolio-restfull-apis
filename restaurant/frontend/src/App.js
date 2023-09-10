@@ -9,7 +9,7 @@ export const OrderContext = createContext();
 const initialOrderState = {
   quantity: 0,
   delivered: false,
-  order_time: Date.now(),
+  order_time: new Date().toJSON(),
   food_id: 1,
   table_id: 1,
 };
