@@ -1,19 +1,34 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import OrderDashboard from "./components/OrderDashboard";
 
+export const OrderContext = createContext();
+
+const initialOrderState = {
+  quantity: 0,
+  delivered: false,
+  order_time: Date.now(),
+  food_id: 1,
+  table_id: 1,
+};
+
 function App() {
+
+  const [order, setOrder] = useState(initialOrderState);
+
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth="md">
-        <Box sx={{ bgcolor: '#1b283b', height: '100vh', overflow: "scroll" }}>
-          <OrderDashboard />
-        </Box>
-      </Container>
-    </React.Fragment>
+    <OrderContext.Provider value={{order: order, setOrder: setOrder}}>
+      <React.Fragment>
+        <CssBaseline />
+        <Container maxWidth="md">
+          <Box sx={{ bgcolor: '#1b283b', height: '100vh', overflow: "scroll" }}>
+            <OrderDashboard />
+          </Box>
+        </Container>
+      </React.Fragment>
+    </OrderContext.Provider>
   );
 }
 

@@ -6,7 +6,7 @@ import FoodCard from './FoodCard';
 
 const OrderDashboard = () => {
   
-  const [foods, setFoods] = useState([])
+  const [foods, setFoods] = useState([]);
 
   const fetchFoods = async () => {
     return await api.get(
@@ -30,7 +30,7 @@ const OrderDashboard = () => {
 
   return (
     <Box sx={{ flexGrow: 1, padding: 2 }}>
-      <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+      <Grid container spacing={{ xs: 4, md: 8 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {
           foods.map((foods) => {
             return (
