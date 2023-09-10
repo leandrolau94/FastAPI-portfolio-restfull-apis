@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Radio from '@mui/material/Radio';
@@ -9,10 +9,21 @@ import FormLabel from '@mui/material/FormLabel';
 import api from './api';
 import FoodCard from './FoodCard';
 
+import { OrderContext } from '../App';
+
 const OrderDashboard = () => {
   
   const [foods, setFoods] = useState([]);
   const [tables, setTables] = useState([]);
+  const [tableID, setTableID] = useState('');
+
+  const orderContext = useContext(OrderContext);
+  // const order = orderContext.order;
+  const setOrder = orderContext.setOrder;
+
+  const handleTableChange = (event) => {
+    setTableID(event.target.value);
+  };
 
   const fetchFoods = async () => {
     return await api.get(
@@ -49,7 +60,13 @@ const OrderDashboard = () => {
   useEffect(() => {
     fetchFoods();
     fetchTables();
-  }, []);
+    setOrder(previousState => {
+      return {
+        ...previousState,
+        table_id: parseInt(tableID),
+      };
+    });
+  }, [tableID]);
 
   return (
     <Box sx={{ flexGrow: 1, padding: 2 }}>
@@ -59,11 +76,13 @@ const OrderDashboard = () => {
           row
           aria-labelledby="demo-row-radio-buttons-group-table"
           name="row-radio-buttons-group"
+          value={tableID}
+          onChange={handleTableChange}
         >
           {
             tables.map((table, index) => {
               return (
-                <FormControlLabel value={`${table.id}`} control={<Radio />} label={`Table ${table.table_number}`} />
+                <FormControlLabel key={`${table.id}`} value={`${table.id}`} control={<Radio />} label={`Table ${table.table_number}`} />
               )
             })
           }

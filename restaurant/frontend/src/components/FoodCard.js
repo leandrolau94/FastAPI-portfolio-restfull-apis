@@ -11,6 +11,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import api from './api';
 
 const FoodCard = (props) => {
     const {id, name, img_url, category, price} = props;
@@ -25,8 +26,35 @@ const FoodCard = (props) => {
         setQuantity(event.target.value);
     };
 
-    const handleAddToOrder = () => {
-        console.log(order);
+    const sendOrder = async (food_id, table_id, orderObj) => {
+        return await api.post(
+            `/order/food/${food_id}/table/${table_id}`,
+            orderObj,
+            {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+              },
+              withCredentials: true,
+            }
+          ).then(response => {
+            console.log(response);
+          }).catch(err => {
+            console.log(err);
+        });
+      };
+
+    const handleAddToOrder = async () => {
+        var receiveOrder = {
+            quantity: order.quantity,
+            delivered: false,
+            order_time: order.order_time,
+        };
+        await sendOrder(
+            order.food_id,
+            order.table_id,
+            receiveOrder
+        );
+        console.log(`Order successfully sent.`);
     };
 
     useEffect(() => {
@@ -34,6 +62,7 @@ const FoodCard = (props) => {
             return {
                 ...previousState,
                 quantity: quantity,
+                food_id: id,
             };
         });
     }, [quantity]);
