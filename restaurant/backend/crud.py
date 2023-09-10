@@ -32,3 +32,41 @@ def get_all_foods(
     return db.query(models.Food).offset(skip).limit(
         limit
     ).all()
+
+# Used in main to create a table
+def get_table_by_table_number(
+        db: Session,
+        table_number: int,
+):
+    return db.query(models.Table).filter(
+        models.Table.table_number == table_number
+    ).first()
+
+def create_table(
+        db: Session,
+        table: schemas.TableCreate,
+):
+    db_table = models.Table(
+        table_number=table.table_number
+    )
+    db.add(db_table)
+    db.commit()
+    db.refresh(db_table)
+    return db_table
+
+# Used in main to create an order
+def create_order(
+        db: Session,
+        order: schemas.OrderCreate,
+        food_id: int,
+        table_id: int,
+):
+    db_order = models.Order(
+        **order.model_dump(),
+        food_id=food_id,
+        table_id=table_id,
+    )
+    db.add(db_order)
+    db.commit()
+    db.refresh(db_order)
+    return db_order

@@ -1,6 +1,7 @@
-from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
+from fastapi import Depends, FastAPI, HTTPException, Request, Response, status, Path
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from typing import Annotated
 import uvicorn
 
 import crud, models, schemas
@@ -98,6 +99,59 @@ def read_foods(
         db=db, skip=skip, limit=limit,
     )
     return foods
+
+# For create a table in the tables database table
+@app.post(
+        "/table/",
+        response_model=schemas.Table,
+        summary="Create a table",
+        include_in_schema=True,
+)
+def create_table(
+    table: schemas.TableCreate,
+    db: Session = Depends(get_db),
+):
+    """
+    Create a table in the restaurant
+
+    - **table_number**: The number of the table
+    """
+    db_table = crud.get_table_by_table_number(
+        db=db, table_number=table.table_number
+    )
+    if db_table:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Table already exists"
+        )
+    return crud.create_table(db=db, table=table)
+
+# For create an order in the order database table
+@app.post(
+    "/order/food/{food_id}/table/{table_id}/",
+    response_model=schemas.Order,
+    summary="Create an order in the database",
+    include_in_schema=True,
+)
+def create_order(
+    food_id: Annotated[int, Path(title="The id of the food to order", gt=0)],
+    table_id: Annotated[int, Path(title="The id of the table the order comes from", gt=0)],
+    order: schemas.OrderCreate,
+    db: Session = Depends(get_db),
+):
+    """
+    Create an order for the kitchen
+
+    - **food_id**: The id of the food to order
+    - **table_id**: The id of the restaurant table the order comes from
+    - `quantity`: The quantity of food per order
+    """
+    return crud.create_order(
+        db=db,
+        order=order,
+        food_id=food_id,
+        table_id=table_id,
+    )
 
 if __name__ == "__main__":
     uvicorn.run(
