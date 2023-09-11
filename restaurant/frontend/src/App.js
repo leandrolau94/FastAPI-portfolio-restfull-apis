@@ -22,8 +22,8 @@ function App() {
     <OrderContext.Provider value={{order: order, setOrder: setOrder}}>
       <React.Fragment>
         <CssBaseline />
-        <Container maxWidth="md">
-          <Box sx={{ bgcolor: '#1b283b', height: '100vh', overflow: "scroll" }}>
+        <Container maxWidth="lg">
+          <Box sx={{ height: '100vh' }}>
             <OrderDashboard />
           </Box>
         </Container>
