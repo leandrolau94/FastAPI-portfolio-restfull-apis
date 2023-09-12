@@ -14,6 +14,7 @@ app = FastAPI()
 # setting up cors policy
 origins = [
     "http://192.168.43.163:3000",
+    "http://192.168.43.163:3000/order",
 ]
 app.add_middleware(
     CORSMiddleware,

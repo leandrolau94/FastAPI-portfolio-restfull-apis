@@ -20,6 +20,8 @@ const FoodCard = (props) => {
     const order = orderContext.order;
     const setOrder = orderContext.setOrder;
 
+    const setTables = orderContext.setTables;
+
     const [quantity, setQuantity] = useState('');
 
     const handleQuantityChange = (event) => {
@@ -54,6 +56,19 @@ const FoodCard = (props) => {
             order.table_id,
             receiveOrder
         );
+        await api.get(
+            "/table/?skip=0&limit=100",
+            {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+              },
+              withCredentials: true,
+            }
+          ).then(response => {
+            setTables(response.data);
+          }).catch(err => {
+            console.log(err);
+        });
         console.log(`Order successfully sent.`);
     };
 

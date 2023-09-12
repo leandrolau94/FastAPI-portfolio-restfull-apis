@@ -7,8 +7,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { styled } from '@mui/material/styles';
-import api from './api';
 import FoodCard from './FoodCard';
+import { Link } from 'react-router-dom';
 
 import { OrderContext } from '../App';
 
@@ -67,55 +67,38 @@ function BpRadio(props) {
   );
 }
 
+const StyledLink = styled(Link)`
+  margin: auto;
+  padding: 7px 15px;
+  font-family: sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  text-decoration: none;
+  color: white;
+  background-color: #2979ff;
+  border-radius: 5px;
+`;
+
 const OrderDashboard = () => {
-  
-  const [foods, setFoods] = useState([]);
-  const [tables, setTables] = useState([]);
+
   const [tableID, setTableID] = useState('');
 
   const orderContext = useContext(OrderContext);
+  
   // const order = orderContext.order;
   const setOrder = orderContext.setOrder;
+
+  const foods = orderContext.foods;
+  // const setFoods = orderContext.setFoods;
+
+  const tables = orderContext.tables;
+  // const setTables = orderContext.setTables;
 
   const handleTableChange = (event) => {
     setTableID(event.target.value);
   };
 
-  const fetchFoods = async () => {
-    return await api.get(
-      "/food/?skip=0&limit=1000",
-      {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-        withCredentials: true,
-      }
-    ).then(response => {
-      setFoods(response.data);
-    }).catch(err => {
-      console.log(err);
-    })
-  };
-
-  const fetchTables = async () => {
-    return await api.get(
-      "/table/?skip=0&limit=100",
-      {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-        withCredentials: true,
-      }
-    ).then(response => {
-      setTables(response.data);
-    }).catch(err => {
-      console.log(err);
-    });
-  };
-
   useEffect(() => {
-    fetchFoods();
-    fetchTables();
     setOrder(previousState => {
       return {
         ...previousState,
@@ -126,7 +109,7 @@ const OrderDashboard = () => {
 
   return (
     <React.Fragment>
-      <FormControl sx={{ m: 4, color: "black", textAlign: "center", bgcolor: "#f57c00", padding: 2, borderRadius: "5px", overflow: "scroll", maxHeight: '25vh' }}>
+      <FormControl sx={{ m: 2, color: "black", textAlign: "center", bgcolor: "#f57c00", padding: 2, borderRadius: "5px", overflow: "scroll", maxHeight: '20vh' }}>
         <FormLabel id="demo-row-radio-buttons-group-table" sx={{ color: "black" }}>Select your table number</FormLabel>
         <RadioGroup
           row
@@ -155,6 +138,9 @@ const OrderDashboard = () => {
             })
           }
         </Grid>
+      </Box>
+      <Box sx={{ p: 2, textAlign: "center", maxHeight: '5vh' }}>
+        <StyledLink to="/order">See order</StyledLink>
       </Box>
     </React.Fragment>
   )
