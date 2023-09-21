@@ -73,6 +73,21 @@ def get_table_by_table_id(
         models.Table.id == table_id
     ).first()
 
+# Used in main for delete the orders from
+# a certain table
+def delete_order_from_table_id(
+        db: Session,
+        table_id: int,
+):
+    db_order = db.query(models.Table).filter(
+        models.Table.id == table_id
+    ).first()
+    orders = db_order.table_orders
+    for order in orders:
+        db.delete(order)
+        db.commit()
+    return {"msg": "order succesfully deleted"}
+
 # Used in main to create an order
 def create_order(
         db: Session,
@@ -81,7 +96,7 @@ def create_order(
         table_id: int,
 ):
     db_order = models.Order(
-        **order.model_dump(),
+        **order.dict(),
         food_id=food_id,
         table_id=table_id,
     )

@@ -15,9 +15,8 @@ class Order(OrderBase):
     food_id: int
     table_id: int
 
-    class ConfigDict:
-        # for replacing the orm_mode = True
-        from_attributes = True
+    class Config:
+        orm_mode = True
 
 # For foods table
 class FoodBase(BaseModel):
@@ -33,9 +32,8 @@ class Food(FoodBase):
     id: int
     orders: list[Order] = []
 
-    class ConfigDict:
-        # for replacing the orm_mode = True
-        from_attributes = True
+    class Config:
+        orm_mode = True
 
 # For tables table
 class TableBase(BaseModel):
@@ -48,6 +46,5 @@ class Table(TableBase):
     id: int
     table_orders: list[Order] = []
 
-    class ConfigDict:
-        # for replacing the orm_mode = True
-        from_attributes = True
+    class Config:
+        orm_mode = True

@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -8,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import EuroIcon from '@mui/icons-material/Euro';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { OrderContext } from '../App';
 
 const OrderForTable = () => {
@@ -20,6 +21,12 @@ const OrderForTable = () => {
     const tables = orderContext.tables;
 
     const foods = orderContext.foods;
+
+    const fetchTables = orderContext.fetchTables;
+
+    const deleteOrderFromTable = orderContext.deleteOrderFromTable;
+
+    const navigate = useNavigate();
 
     const table = tables.find((obj) => {
         return obj.id === order.table_id;
@@ -43,6 +50,16 @@ const OrderForTable = () => {
             featured: true,
         });
     });
+
+    const handleOrderDelete = async () => {
+        try {
+            await deleteOrderFromTable();
+            await fetchTables();
+            navigate("/");
+        } catch (error) {
+            console.log(error);
+        };
+    };
 
     if (tableOrderArr.length === 0) {
         return (
@@ -92,6 +109,9 @@ const OrderForTable = () => {
             </ImageList>
             <Box sx={{ p: 2, textAlign: "center", maxHeight: '5vh' }}>
                 <Link to="/">Back to order</Link>
+                <Button variant="contained" size="medium" sx={{ marginLeft: 2 }} onClick={handleOrderDelete}>
+                    Cancel Order
+                </Button>
             </Box>
         </React.Fragment>
     )

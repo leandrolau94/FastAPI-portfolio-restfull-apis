@@ -32,15 +32,9 @@ def get_db():
     finally:
         db.close()
 
-# Endpoints Definition for consuming them in the frontend
-endpoints = {
-    "create_new_employee": "/employees/",
-    "read_all_employes": "/employees/",
-}
-
 # endpoint for create a new employee
 @app.post(
-    endpoints["create_new_employee"],
+    "/employees/",
     response_model=schemas.Employee,
     summary="Create a new employee in the database",
     include_in_schema=True,
@@ -75,7 +69,7 @@ def create_employee(
 
 # endpoint for read all employees
 @app.get(
-    endpoints["read_all_employes"],
+    "/employees/",
     response_model=list[schemas.Employee],
     summary="Read all employees from the database along with its required information",
     include_in_schema=True,

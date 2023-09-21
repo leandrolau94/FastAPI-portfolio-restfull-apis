@@ -17,51 +17,51 @@ const EmployeeList = () => {
           field: 'full_name',
           headerName: 'Full Name',
           width: 200,
-          editable: true,
+          editable: false,
         },
         {
           field: 'email',
           headerName: 'Email',
           width: 200,
-          editable: true,
+          editable: false,
         },
         {
           field: 'age',
           headerName: 'Age',
           type: 'number',
           width: 110,
-          editable: true,
+          editable: false,
         },
         {
           field: 'genre',
           headerName: 'Genre',
           width: 160,
-          editable: true,
+          editable: false,
         },
         {
             field: 'country',
             headerName: 'Country',
             width: 160,
-            editable: true,
+            editable: false,
         },
         {
             field: 'role',
             headerName: 'Role',
             width: 160,
-            editable: true,
+            editable: false,
         },
         {
             field: 'wage',
             headerName: 'Wage',
             type: 'number',
             width: 160,
-            editable: true,
+            editable: false,
         },
         {
             field: 'start_date',
             headerName: 'Date Started',
             width: 200,
-            editable: true,
+            editable: false,
         },
     ];
       
@@ -76,14 +76,14 @@ const EmployeeList = () => {
     }
 
     return (
-        <Box sx={{ maxHeight: '15vh', maxWidth: '96vh', m: 3 }}>
+        <Box sx={{ maxHeight: '30vh', maxWidth: '90vw', m: 3 }}>
             <DataGrid
                 rows={rows}
                 columns={columns}
                 initialState={{
                 pagination: {
                     paginationModel: {
-                    pageSize: 5,
+                    pageSize: 3,
                     },
                 },
                 }}

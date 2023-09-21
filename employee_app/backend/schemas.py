@@ -17,5 +17,5 @@ class EmployeeCreate(EmployeeBase):
 class Employee(EmployeeBase):
     id: int
 
-    class ConfigDict:
-        from_attributes = True
+    class Config:
+        orm_mode = True

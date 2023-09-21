@@ -15,6 +15,8 @@ app = FastAPI()
 origins = [
     "http://192.168.43.163:3000",
     "http://192.168.43.163:3000/order",
+    "http://localhost:3000",
+    "http://localhost:3000/order",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -170,6 +172,20 @@ def read_table_by_table_id(
             detail="Table not found",
         )
     return db_table
+
+# For delete all orders from a certain table
+@app.delete(
+        "/table/{table_id}/delete-order",
+        summary="Delete all orders from a table",
+        include_in_schema=True,
+)
+def delete_order_from_table_id(
+    table_id: int,
+    db: Session = Depends(get_db),
+):
+    return crud.delete_order_from_table_id(
+        db=db, table_id=table_id
+    )
 
 # For create an order in the order database table
 @app.post(

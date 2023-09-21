@@ -73,13 +73,29 @@ function App() {
     });
   };
 
+  const deleteOrderFromTable = async () => {
+    return await api.delete(
+      `/table/${order.table_id}/delete-order`,
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+        withCredentials: true,
+      }
+    ).then(response => {
+      console.log(response.data);
+    }).catch(err => {
+      console.log(err);
+    });
+  };
+
   useEffect(() => {
     fetchFoods();
     fetchTables();
   }, []);
 
   return (
-    <OrderContext.Provider value={{order: order, setOrder: setOrder, foods: foods, setFoods: setFoods, tables: tables, setTables: setTables}}>
+    <OrderContext.Provider value={{order: order, setOrder: setOrder, foods: foods, setFoods: setFoods, tables: tables, setTables: setTables, fetchTables: fetchTables, deleteOrderFromTable: deleteOrderFromTable}}>
       <RouterProvider router={router}>
       </RouterProvider>
     </OrderContext.Provider>
