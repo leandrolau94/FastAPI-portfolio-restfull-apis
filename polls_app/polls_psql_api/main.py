@@ -13,6 +13,7 @@ app = FastAPI()
 # setting up cors policy
 origins = [
     "http://localhost:3000",
+    "http://192.168.43.163:3000",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -124,16 +125,6 @@ def create_choice_for_question(
     - **votes_number**: the number of votes for this choice. By default 0.
     - **question_id**: the id of the question this choice will belong to.
     """
-    db_choice = crud.get_question_choice_by_choice_text(
-        db=db,
-        text=choice.choice_text,
-        question_root_id=question_id
-    )
-    if db_choice:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Choice already exists"
-        )
     return crud.create_question_choice(
         db=db,
         choice=choice,

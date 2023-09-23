@@ -59,7 +59,7 @@ def create_question_choice(
         question_root_id: int
 ):
     db_choice = models.Choice(
-        **choice.model_dump(),
+        **choice.dict(),
         question_id=question_root_id
     )
     db.add(db_choice)

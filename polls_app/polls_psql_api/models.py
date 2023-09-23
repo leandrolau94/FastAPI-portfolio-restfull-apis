@@ -32,7 +32,6 @@ class Choice(Base):
     )
     choice_text = Column(
         String,
-        unique=True,
         index=True
     )
     votes_number = Column(

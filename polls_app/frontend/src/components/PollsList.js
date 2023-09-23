@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Question from './Question';
-import api from './api';
+import { QuestionsContext } from '../App';
 
 const PollsList = () => {
   const [expanded, setExpanded] = useState('');
@@ -9,27 +9,9 @@ const PollsList = () => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  const [questions, setQuestions] = useState([]);
+  const questionsContext = useContext(QuestionsContext);
 
-    const fetchQuestions = async () => {
-        return await api.get(
-            "/questions/?skip=0&limit=100",
-            {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                },
-                withCredentials: true,
-            }
-        ).then(response => {
-            setQuestions(response.data);
-        }).catch(err => {
-            console.log(err);
-        });
-    };
-
-    useEffect(() => {
-        fetchQuestions();
-    }, []);
+  const questions = questionsContext.questions;
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -7,6 +7,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 
+import { QuestionsContext } from '../App';
 import api from './api';
 
 const Choices = (props) => {
@@ -22,7 +23,11 @@ const Choices = (props) => {
         setError(false);
     };
 
-    const incrementVotesCout = async () => {
+    const questionsContext = useContext(QuestionsContext);
+
+    const fetchQuestions = questionsContext.fetchQuestions;
+
+    const incrementVotesCount = async () => {
         return await api.put(
             `/questions/${polls_question_id}/choices/${value}`,
             {
@@ -34,17 +39,18 @@ const Choices = (props) => {
         )
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         if (value !== '') {
-        setHelperText(`You got choice ${value}`);
+        setHelperText(`You have chosen, thanks`);
         setError(false);
         } else {
         setHelperText('Please select a choice.');
         setError(true);
         };
-        incrementVotesCout();
+        await incrementVotesCount();
+        await fetchQuestions();
         console.log("votes attribute successfully incremented.");
     };
 
@@ -63,7 +69,7 @@ const Choices = (props) => {
                     choicesArray.map(
                         (choice) => {
                             return (
-                                <FormControlLabel key={choice.id} value={choice.id} control={<Radio />} label={choice.choice_text} />
+                                <FormControlLabel key={choice.id} value={choice.id} control={<Radio />} label={`${choice.choice_text}(${choice.votes_number})`} />
                             )
                         }
                     )
@@ -71,7 +77,7 @@ const Choices = (props) => {
             </RadioGroup>
             <FormHelperText>{helperText}</FormHelperText>
             <Button sx={{ mt: 1, mr: 1 }} type="submit" variant="outlined">
-            Submit Choice
+                Submit Choice
             </Button>
         </FormControl>
         </form>

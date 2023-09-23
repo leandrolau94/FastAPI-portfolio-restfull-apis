@@ -12,8 +12,7 @@ class Choice(ChoiceBase):
     question_id: int
 
     class Config:
-        # for replacing the orm_mode = True
-        from_attributes = True
+        orm_mode = True
 
 class QuestionBase(BaseModel):
     question_text: str
@@ -26,5 +25,4 @@ class Question(QuestionBase):
     choices: list[Choice] = []
 
     class Config:
-        # for replacing the orm_mode = True
-        from_attributes = True
+        orm_mode = True
