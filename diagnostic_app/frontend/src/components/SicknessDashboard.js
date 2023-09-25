@@ -39,9 +39,9 @@ const SicknessDashboard = () => {
     }, [searchVal]);
 
   return (
-    <Box>
-        <TextField id="outlined-basic" label="Tap symptons to search possible diseases" variant="outlined" onChange={e => setSearchVal(e.target.value)} />
-        <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+    <Box sx={{ textAlign: "center", justifyContent: 'center', width: "100%", height: "100%" }}>
+        <TextField id="outlined-basic" label="Teclee los sintomas para mostrar posibles enfermedades" variant="outlined" onChange={e => setSearchVal(e.target.value)} sx={{ width: "100%", marginBottom: 3 }} />
+        <List sx={{ width: '100%', bgcolor: 'background.paper', textAlign: "center", justifyContent: 'center', mx: "auto", borderLeft: "1px solid gray", borderTop: "1px solid gray", borderBottom: "1px solid gray", borderRadius: "5px", overflowY: "scroll" }}>
             {
                 showDisease.map((showDisease) => {
                     return (

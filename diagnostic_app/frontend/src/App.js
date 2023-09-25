@@ -34,7 +34,7 @@ function App() {
   return (
     <SicknessContext.Provider value={{ sickness: sickness, setSickness: setSickness, fetchSickness: fetchSickness }}>
       <Header />
-      <Container maxWidth="md" sx={{ marginTop: 4 }}>
+      <Container maxWidth="md" sx={{ marginTop: 4, display: "flex", justifyContent: "center", padding: "5px", maxWidth: "90%", maxHeight: "80%" }}>
         <SicknessDashboard />
       </Container>
     </SicknessContext.Provider>

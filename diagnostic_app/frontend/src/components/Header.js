@@ -9,14 +9,14 @@ import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
 function Header() {
   
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ display: "flex", width: "100%", margin: 0 }}>
       <AppBar position="static">
-        <Toolbar variant="dense">
+        <Toolbar variant="regular" sx={{ backgroundColor: "#17283b" }}>
           <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <MedicalInformationIcon />
           </IconButton>
           <Typography variant="h6" color="inherit" component="div">
-            Wellcome to the Disease Diagnosis App
+            Aplicacion de Diagnostico de Enfermedades
           </Typography>
         </Toolbar>
       </AppBar>
