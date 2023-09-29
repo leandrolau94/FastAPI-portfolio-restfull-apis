@@ -1,8 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from phonenumbers.phonenumber import PhoneNumber
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from database import Base
 
 class Person(Base):
     __tablename__ = "people"
@@ -12,7 +11,7 @@ class Person(Base):
     email = Column(String, unique=True, index=True)
     address = Column(String, index=True)
     postal_code = Column(Integer, index=True)
-    phone_number = Column(PhoneNumber, index=True)
+    phone_number = Column(String, index=True)
 
     work_experience = relationship(
         "ProfessionalExperience",
@@ -64,7 +63,7 @@ class Projects(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(Integer, index=True)
     description = Column(String, index=True)
-    person_id = Column(Integer, ForeignKey=("people.id"))
+    person_id = Column(Integer, ForeignKey("people.id"))
 
     person = relationship(
         "Person",
@@ -77,7 +76,7 @@ class Languages(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     level = Column(String, index=True)
-    person_id = Column(Integer, ForeignKey=("people.id"))
+    person_id = Column(Integer, ForeignKey("people.id"))
 
     person = relationship(
         "Person",
